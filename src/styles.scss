@@ -1,1 +1,171 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: #f8f7f2;
+}
+
+body {
+  margin: 0;
+  background: #f8f7f2;
+  color: #26332e;
+  font-family: "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page-heading {
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  display: block;
+  margin-bottom: 0.65rem;
+  color: #a17340;
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.page-heading h1,
+.hero-copy h1 {
+  margin: 0;
+  color: #173d36;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+
+.page-heading p {
+  margin: 0.7rem 0 0;
+  color: #73776e;
+  line-height: 1.6;
+}
+
+.surface {
+  border: 1px solid #e9e5dc;
+  border-radius: 10px;
+  background: #fffefa;
+  box-shadow: 0 8px 24px rgb(38 51 46 / 4%);
+}
+
+.primary-button,
+.secondary-button,
+.danger-button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.primary-button {
+  background: #173d36;
+  color: #fffefa;
+}
+
+.primary-button:hover:not(:disabled) {
+  background: #24564c;
+  color: #fffefa;
+}
+
+.secondary-button {
+  border-color: #d8d8ce;
+  background: #fffefa;
+  color: #46534b;
+}
+
+.secondary-button:hover {
+  background: #f4f2eb;
+}
+
+.danger-button {
+  min-height: 36px;
+  padding: 0.45rem 0.7rem;
+  border-color: #eed4cd;
+  background: #fff8f5;
+  color: #a34735;
+  font-size: 0.82rem;
+}
+
+.danger-button:hover {
+  background: #fbe9e4;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.form-field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.form-field label {
+  color: #38473f;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.72rem 0.85rem;
+  border: 1px solid #d9dbd2;
+  border-radius: 6px;
+  outline: none;
+  background: #fffefa;
+  color: #26332e;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.form-control:focus {
+  border-color: #6e9789;
+  box-shadow: 0 0 0 3px rgb(44 107 88 / 11%);
+}
+
+.form-error,
+.notice-error {
+  padding: 0.9rem 1rem;
+  border: 1px solid #efd0c7;
+  border-radius: 6px;
+  background: #fff4f0;
+  color: #994535;
+}
+
+.notice-info {
+  padding: 1.25rem;
+  border: 1px solid #e9e5dc;
+  border-radius: 8px;
+  background: #fffefa;
+  color: #73776e;
+}
+
+.loading-state {
+  padding: 3rem 1rem;
+  color: #73776e;
+  text-align: center;
+}

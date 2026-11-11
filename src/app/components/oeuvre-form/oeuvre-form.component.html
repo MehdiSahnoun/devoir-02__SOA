@@ -1,0 +1,95 @@
+<section class="form-page">
+  <div *ngIf="accessDenied" class="access-denied surface" role="alert">
+    <span class="access-denied-icon" aria-hidden="true">!</span>
+    <span class="eyebrow">Accès non autorisé</span>
+    <h1>Modification indisponible</h1>
+    <p>Cette fonctionnalité n’est pas prise en charge par votre compte. Seul un administrateur peut ajouter ou modifier une œuvre.</p>
+    <a class="secondary-button" routerLink="/oeuvres">Retour à la liste des œuvres</a>
+  </div>
+
+  <ng-container *ngIf="!accessDenied">
+  <div class="page-heading">
+    <span class="eyebrow">{{ isEdit ? 'Mise à jour de la collection' : 'Enrichir la collection' }}</span>
+    <h1>{{ isEdit ? 'Modifier l’œuvre' : 'Ajouter une œuvre' }}</h1>
+    <p>{{ isEdit ? 'Mettez à jour les informations de cette œuvre.' : 'Créez une fiche et associez l’œuvre à un musée.' }}</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state" role="status">Chargement de l’œuvre…</div>
+  <div *ngIf="error" class="notice-error" role="alert">{{ error }}</div>
+
+  <form
+    *ngIf="!loading && (!isEdit || oeuvre.idOeuvre > 0)"
+    class="artwork-form surface"
+    (ngSubmit)="onSubmit()"
+    #oeuvreForm="ngForm"
+  >
+    <div class="form-intro">
+      <span class="eyebrow">Informations sur l’œuvre</span>
+      <p>Les champs marqués d'un astérisque sont obligatoires.</p>
+    </div>
+
+    <div class="form-field">
+      <label for="titreOeuvre">Titre de l’œuvre <span aria-hidden="true">*</span></label>
+      <input
+        id="titreOeuvre"
+        type="text"
+        class="form-control"
+        [(ngModel)]="oeuvre.titreOeuvre"
+        name="titreOeuvre"
+        placeholder="Ex. La Liberté guidant le peuple"
+        required
+        maxlength="160"
+      />
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="anneeCreation">Année de création <span aria-hidden="true">*</span></label>
+        <input
+          id="anneeCreation"
+          type="number"
+          class="form-control"
+          [(ngModel)]="oeuvre.anneeCreation"
+          name="anneeCreation"
+          required
+          min="0"
+          [max]="currentYear"
+        />
+      </div>
+      <div class="form-field">
+        <label for="dateAcquisition">Date d'acquisition <span aria-hidden="true">*</span></label>
+        <input
+          id="dateAcquisition"
+          type="date"
+          class="form-control"
+          [(ngModel)]="dateAcquisition"
+          name="dateAcquisition"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-field">
+      <label for="musee">Musée associé <span aria-hidden="true">*</span></label>
+      <select
+        id="musee"
+        class="form-control"
+        [(ngModel)]="selectedMuseeId"
+        name="musee"
+        required
+      >
+        <option [ngValue]="null" disabled>Choisir un musée</option>
+        <option *ngFor="let musee of musees" [ngValue]="musee.idMusee">{{ musee.nomMusee }}</option>
+      </select>
+      <small *ngIf="musees.length === 0" class="field-hint">Ajoutez d’abord un musée pour pouvoir associer une œuvre.</small>
+    </div>
+
+    <div class="form-actions">
+      <a class="secondary-button" routerLink="/oeuvres">Annuler</a>
+      <button class="primary-button" type="submit" [disabled]="!oeuvreForm.form.valid || saving || musees.length === 0">
+        {{ saving ? 'Enregistrement…' : (isEdit ? 'Enregistrer les modifications' : 'Créer l’œuvre') }}
+      </button>
+    </div>
+  </form>
+  </ng-container>
+</section>

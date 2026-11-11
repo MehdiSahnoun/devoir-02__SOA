@@ -1,0 +1,65 @@
+<section class="home-page">
+  <div class="hero">
+    <div class="hero-copy">
+      <span class="eyebrow">Votre espace culturel</span>
+      <h1>Les musées ont<br />tant à raconter.</h1>
+      <p>Retrouvez vos lieux, leurs collections et les œuvres qui les font vivre.</p>
+      <div class="hero-actions">
+        <a class="primary-button" routerLink="/musees">Découvrir les musées <span aria-hidden="true">→</span></a>
+        <a class="text-link" routerLink="/oeuvres">Explorer les œuvres</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-sun"></div>
+      <div class="art-arch">
+        <div class="art-opening"></div>
+      </div>
+      <div class="art-caption">L'art nous rassemble</div>
+    </div>
+  </div>
+
+  <div class="welcome-row">
+    <div>
+      <span class="eyebrow">En un coup d'œil</span>
+      <h2>Votre patrimoine, en un seul endroit.</h2>
+    </div>
+    <a class="text-link" routerLink="/musees">{{ auth.isAdmin() ? 'Gérer les musées' : 'Voir les musées' }} <span aria-hidden="true">→</span></a>
+  </div>
+
+  <div *ngIf="error" class="notice-error" role="alert">
+    {{ error }}
+    <button class="retry-button" type="button" (click)="loadMusees()">Réessayer</button>
+  </div>
+
+  <div class="summary-grid">
+    <article class="summary-card surface">
+      <span class="summary-icon" aria-hidden="true">M</span>
+      <div>
+        <span class="summary-label">Musées répertoriés</span>
+        <strong>{{ loading ? '…' : musees.length }}</strong>
+        <a routerLink="/musees">Consulter la liste <span aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <article *ngIf="auth.isAdmin()" class="summary-card summary-card-accent surface">
+      <span class="summary-icon" aria-hidden="true">+</span>
+      <div>
+        <span class="summary-label">Un nouveau lieu à partager ?</span>
+        <strong class="summary-title">Ajoutez un musée</strong>
+        <a routerLink="/musees/new">Créer une fiche musée <span aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <article class="summary-card surface">
+      <span class="summary-icon" aria-hidden="true">✳</span>
+      <div>
+        <span class="summary-label">Collections</span>
+        <strong class="summary-title">Les œuvres</strong>
+        <a routerLink="/oeuvres">Parcourir les œuvres <span aria-hidden="true">→</span></a>
+      </div>
+    </article>
+  </div>
+
+  <div *ngIf="!loading && !error && musees.length === 0" class="empty-note">
+    <p>Votre collection commence ici.</p>
+    <a *ngIf="auth.isAdmin()" class="primary-button" routerLink="/musees/new">Ajouter votre premier musée</a>
+  </div>
+</section>

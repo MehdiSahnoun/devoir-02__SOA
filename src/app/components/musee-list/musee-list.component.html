@@ -1,0 +1,116 @@
+<section class="museum-page">
+  <div class="page-heading museum-heading">
+    <div>
+      <span class="eyebrow">Répertoire culturel</span>
+      <h1>Les musées</h1>
+      <p>Gérez les lieux qui font vivre notre patrimoine.</p>
+    </div>
+    <a *ngIf="auth.isAdmin()" class="primary-button" routerLink="/musees/new"><span aria-hidden="true">+</span> Ajouter un musée</a>
+  </div>
+
+  <div class="list-toolbar surface">
+    <div class="filter-fields">
+      <label class="filter-choice">
+        <span>Filtrer par</span>
+        <select class="form-control" [(ngModel)]="filterType" aria-label="Choisir le critère de filtre">
+          <option value="">Tous les musées</option>
+          <option value="nom">Nom</option>
+          <option value="superficieMin">Superficie minimale</option>
+          <option value="superficieMax">Superficie maximale</option>
+        </select>
+      </label>
+      <label *ngIf="filterType === 'nom'" class="search-field">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          type="search"
+          class="form-control"
+          [(ngModel)]="searchTerm"
+          placeholder="Ex. Musée du Louvre"
+          aria-label="Filtrer par nom de musée"
+        />
+      </label>
+      <label *ngIf="filterType === 'superficieMin'" class="area-field">
+        <span>Superficie minimale (m²)</span>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="superficieMin"
+          min="0"
+          placeholder="Sans minimum"
+          aria-label="Superficie minimale en mètres carrés"
+        />
+      </label>
+      <label *ngIf="filterType === 'superficieMax'" class="area-field">
+        <span>Superficie maximale (m²)</span>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="superficieMax"
+          min="0"
+          placeholder="Sans maximum"
+          aria-label="Superficie maximale en mètres carrés"
+        />
+      </label>
+      <button *ngIf="hasActiveFilters" class="clear-filters" type="button" (click)="clearFilters()">Réinitialiser</button>
+    </div>
+    <span class="result-count">{{ filteredMusees.length }} {{ filteredMusees.length === 1 ? 'musée' : 'musées' }}</span>
+  </div>
+
+  <div *ngIf="loading" class="loading-state" role="status">Chargement des musées…</div>
+  <div *ngIf="error" class="notice-error" role="alert">{{ error }}</div>
+
+  <div *ngIf="!loading && !error && musees.length === 0" class="empty-state surface">
+    <span class="empty-mark" aria-hidden="true">M</span>
+    <h2>Votre répertoire est encore vide</h2>
+    <p>Ajoutez votre premier musée pour commencer à organiser votre patrimoine.</p>
+    <a *ngIf="auth.isAdmin()" class="primary-button" routerLink="/musees/new">Ajouter un musée</a>
+  </div>
+
+  <div *ngIf="!loading && musees.length > 0 && filteredMusees.length === 0" class="notice-info">
+    Aucun musée ne correspond à ces critères.
+  </div>
+
+  <div *ngIf="!loading && filteredMusees.length > 0" class="table-wrap surface">
+    <table class="museum-table">
+      <thead>
+        <tr>
+          <th scope="col">Musée</th>
+          <th scope="col">Superficie</th>
+          <th scope="col">Inauguration</th>
+          <th *ngIf="auth.isAdmin()" scope="col" class="actions-heading">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let musee of filteredMusees">
+          <td data-label="Musée">
+            <div class="museum-name">
+              <span class="museum-initial" aria-hidden="true">{{ musee.nomMusee.charAt(0) }}</span>
+              <span>
+                <strong>{{ musee.nomMusee }}</strong>
+                <small>Référence #{{ musee.idMusee }}</small>
+              </span>
+            </div>
+          </td>
+          <td data-label="Superficie">{{ musee.superficieMusee | number }} m²</td>
+          <td data-label="Inauguration">{{ musee.dateInauguration | date:'d MMMM y' }}</td>
+          <td *ngIf="auth.isAdmin()" data-label="Actions">
+            <div class="row-actions">
+              <a class="edit-button" [routerLink]="['/musees', musee.idMusee, 'edit']" [attr.aria-label]="'Modifier ' + musee.nomMusee">
+                Modifier
+              </a>
+              <button
+                class="danger-button"
+                type="button"
+                (click)="deleteMusee(musee.idMusee)"
+                [disabled]="deletingId === musee.idMusee"
+                [attr.aria-label]="'Supprimer ' + musee.nomMusee"
+              >
+                {{ deletingId === musee.idMusee ? 'Suppression…' : 'Supprimer' }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

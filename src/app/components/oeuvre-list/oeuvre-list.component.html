@@ -1,0 +1,108 @@
+<section class="artwork-page">
+  <div class="page-heading artwork-heading">
+    <div>
+      <span class="eyebrow">Collections culturelles</span>
+      <h1>Les œuvres</h1>
+      <p>Parcourez les œuvres et retrouvez le musée qui les abrite.</p>
+    </div>
+    <a *ngIf="auth.isAdmin()" class="primary-button" routerLink="/oeuvres/nouveau"><span aria-hidden="true">+</span> Ajouter une œuvre</a>
+  </div>
+
+  <div class="list-toolbar surface">
+    <div class="filter-fields">
+      <label class="filter-choice">
+        <span>Filtrer par</span>
+        <select class="form-control" [(ngModel)]="filterType" aria-label="Choisir le critère de filtre">
+          <option value="">Toutes les œuvres</option>
+          <option value="titre">Titre</option>
+          <option value="musee">Musée</option>
+        </select>
+      </label>
+
+      <label *ngIf="filterType === 'titre'" class="search-field">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input
+          type="search"
+          class="form-control"
+          [(ngModel)]="searchTitre"
+          placeholder="Ex. Les Nymphéas"
+          aria-label="Filtrer par titre d'œuvre"
+        />
+      </label>
+
+      <label *ngIf="filterType === 'musee'" class="museum-filter">
+        <span>Choisir un musée</span>
+        <select class="form-control" [(ngModel)]="selectedMuseeId" aria-label="Filtrer par musée">
+          <option [ngValue]="null">Tous les musées</option>
+          <option *ngFor="let musee of musees" [ngValue]="musee.idMusee">{{ musee.nomMusee }}</option>
+        </select>
+      </label>
+
+      <button *ngIf="hasActiveFilters" class="clear-filters" type="button" (click)="clearFilters()">Réinitialiser</button>
+    </div>
+    <span class="result-count">{{ filteredOeuvres.length }} {{ filteredOeuvres.length === 1 ? 'œuvre' : 'œuvres' }}</span>
+  </div>
+
+  <div *ngIf="loading" class="loading-state" role="status">Chargement des œuvres…</div>
+  <div *ngIf="error" class="notice-error" role="alert">{{ error }}</div>
+
+  <div *ngIf="!loading && !error && oeuvres.length === 0" class="empty-state surface">
+    <span class="empty-mark" aria-hidden="true">A</span>
+    <h2>La collection est encore vide</h2>
+    <p>Ajoutez une œuvre pour commencer à enrichir le répertoire.</p>
+    <a *ngIf="auth.isAdmin()" class="primary-button" routerLink="/oeuvres/nouveau">Ajouter une œuvre</a>
+  </div>
+
+  <div *ngIf="!loading && oeuvres.length > 0 && filteredOeuvres.length === 0" class="notice-info">
+    Aucune œuvre ne correspond à ces critères.
+  </div>
+
+  <div *ngIf="!loading && filteredOeuvres.length > 0" class="table-wrap surface">
+    <table class="artwork-table">
+      <thead>
+        <tr>
+          <th scope="col">Œuvre</th>
+          <th scope="col">Année de création</th>
+          <th scope="col">Musée</th>
+          <th scope="col">Acquisition</th>
+          <th *ngIf="auth.isAdmin()" scope="col" class="actions-heading">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let oeuvre of filteredOeuvres">
+          <td data-label="Œuvre">
+            <div class="artwork-name">
+              <span class="artwork-initial" aria-hidden="true">✳</span>
+              <span>
+                <strong>{{ oeuvre.titreOeuvre }}</strong>
+                <small>Référence #{{ oeuvre.idOeuvre }}</small>
+              </span>
+            </div>
+          </td>
+          <td data-label="Année de création">{{ oeuvre.anneeCreation }}</td>
+          <td data-label="Musée">{{ oeuvre.musee?.nomMusee || 'Musée non renseigné' }}</td>
+          <td data-label="Acquisition">{{ oeuvre.dateAcquisition | date:'d MMMM y' }}</td>
+          <td *ngIf="auth.isAdmin()" data-label="Actions">
+            <div class="row-actions">
+              <a
+                class="edit-button"
+                [routerLink]="['/oeuvres', oeuvre.idOeuvre, 'modifier']"
+                [attr.aria-label]="'Modifier ' + oeuvre.titreOeuvre"
+              >
+                Modifier
+              </a>
+              <button
+                class="danger-button"
+                type="button"
+                (click)="deleteOeuvre(oeuvre.idOeuvre)"
+                [attr.aria-label]="'Supprimer ' + oeuvre.titreOeuvre"
+              >
+                Supprimer
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

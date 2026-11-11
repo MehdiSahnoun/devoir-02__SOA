@@ -1,16 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
+import { AppModule } from './app-module';
 import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterModule.forRoot([])
-      ],
-      declarations: [
-        App
-      ],
+      imports: [AppModule],
     })
       .compileComponents();
   });
@@ -21,10 +16,12 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', async () => {
+  it('should render the main navigation', async () => {
     const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, musees-frontend');
+    const links = Array.from(compiled.querySelectorAll('nav[aria-label="Navigation principale"] a'));
+    expect(links.map((link) => link.textContent?.trim())).toEqual(['Accueil', 'Musées', 'Œuvres']);
   });
 });

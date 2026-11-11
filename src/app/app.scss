@@ -1,0 +1,217 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  min-height: 82px;
+  padding: 0 clamp(1.25rem, 6vw, 6rem);
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  background: #fffefa;
+  border-bottom: 1px solid #e9e5dc;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #173d36;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 2.65rem;
+  height: 2.65rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #173d36;
+  color: #f7edcf;
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+}
+
+.brand-name {
+  font-family: Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.brand-name span {
+  display: block;
+  color: #a17340;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.main-nav {
+  display: flex;
+  align-items: stretch;
+  align-self: stretch;
+  gap: 2rem;
+  margin-left: auto;
+}
+
+.main-nav a {
+  display: inline-flex;
+  align-items: center;
+  color: #5e675f;
+  text-decoration: none;
+  font-size: 0.93rem;
+  border-bottom: 2px solid transparent;
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: #173d36;
+  border-bottom-color: #b18048;
+}
+
+.nav-action {
+  padding: 0.72rem 1rem;
+  border-radius: 6px;
+  background: #173d36;
+  color: #fffefa;
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.nav-action:hover {
+  background: #24564c;
+  color: #fffefa;
+  transform: translateY(-1px);
+}
+
+.account-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.account-details {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.account-avatar {
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9efe8;
+  color: #24564c;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.account-copy strong,
+.account-copy small {
+  display: block;
+}
+
+.account-copy strong {
+  max-width: 120px;
+  overflow: hidden;
+  color: #26332e;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+}
+
+.account-copy small {
+  margin-top: 0.15rem;
+  color: #73776e;
+  font-size: 0.7rem;
+}
+
+.logout-button,
+.login-link {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #d9e2da;
+  border-radius: 6px;
+  background: transparent;
+  color: #24564c;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.logout-button:hover,
+.login-link:hover {
+  background: #edf3ed;
+}
+
+.page-content {
+  width: min(1120px, calc(100% - 3rem));
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4.5rem) 0;
+  flex: 1;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.35rem clamp(1.25rem, 6vw, 6rem);
+  border-top: 1px solid #e9e5dc;
+  color: #73776e;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.6rem 1rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0;
+  }
+
+  .main-nav {
+    order: 3;
+    width: 100%;
+    height: 48px;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .nav-action {
+    padding: 0.62rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .account-menu {
+    margin-left: auto;
+  }
+
+  .account-copy {
+    display: none;
+  }
+
+  .logout-button {
+    padding: 0.45rem;
+    font-size: 0.72rem;
+  }
+
+  .page-content {
+    width: min(100% - 2rem, 1120px);
+  }
+
+  .site-footer {
+    flex-direction: column;
+  }
+}

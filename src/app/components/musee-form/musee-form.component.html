@@ -1,0 +1,81 @@
+<section class="form-page">
+  <div *ngIf="accessDenied" class="access-denied surface" role="alert">
+    <span class="access-denied-icon" aria-hidden="true">!</span>
+    <span class="eyebrow">Accès non autorisé</span>
+    <h1>Modification indisponible</h1>
+    <p>Cette fonctionnalité n’est pas prise en charge par votre compte. Seul un administrateur peut ajouter ou modifier un musée.</p>
+    <a class="secondary-button" routerLink="/musees">Retour à la liste des musées</a>
+  </div>
+
+  <ng-container *ngIf="!accessDenied">
+  <div class="page-heading">
+    <span class="eyebrow">{{ isEdit ? 'Mise à jour du répertoire' : 'Enrichir le répertoire' }}</span>
+    <h1>{{ isEdit ? 'Modifier le musée' : 'Ajouter un musée' }}</h1>
+    <p>{{ isEdit ? 'Mettez à jour les informations de ce lieu culturel.' : 'Créez une fiche pour présenter un nouveau lieu culturel.' }}</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-state" role="status">Chargement du musée…</div>
+  <div *ngIf="error" class="notice-error" role="alert">{{ error }}</div>
+
+  <form
+    *ngIf="!loading && (!isEdit || musee.idMusee > 0)"
+    class="museum-form surface"
+    (ngSubmit)="onSubmit()"
+    #museeForm="ngForm"
+  >
+    <div class="form-intro">
+      <span class="eyebrow">Informations générales</span>
+      <p>Les champs marqués d'un astérisque sont obligatoires.</p>
+    </div>
+
+    <div class="form-field">
+      <label for="nomMusee">Nom du musée <span aria-hidden="true">*</span></label>
+      <input
+        id="nomMusee"
+        type="text"
+        class="form-control"
+        [(ngModel)]="musee.nomMusee"
+        name="nomMusee"
+        placeholder="Ex. Musée des Beaux-Arts"
+        required
+        maxlength="120"
+      />
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="superficieMusee">Superficie (m²) <span aria-hidden="true">*</span></label>
+        <input
+          id="superficieMusee"
+          type="number"
+          class="form-control"
+          [(ngModel)]="musee.superficieMusee"
+          name="superficieMusee"
+          placeholder="Ex. 2500"
+          required
+          min="0"
+          step="0.01"
+        />
+      </div>
+      <div class="form-field">
+        <label for="dateInauguration">Date d'inauguration <span aria-hidden="true">*</span></label>
+        <input
+          id="dateInauguration"
+          type="date"
+          class="form-control"
+          [(ngModel)]="dateInauguration"
+          name="dateInauguration"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a class="secondary-button" routerLink="/musees">Annuler</a>
+      <button class="primary-button" type="submit" [disabled]="!museeForm.form.valid || saving">
+        {{ saving ? 'Enregistrement…' : (isEdit ? 'Enregistrer les modifications' : 'Créer le musée') }}
+      </button>
+    </div>
+  </form>
+  </ng-container>
+</section>
